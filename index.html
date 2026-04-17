@@ -93,24 +93,31 @@ body { font-family: 'Poppins', sans-serif; }
 </div>
 
 <script>
-// ====================== MÁSCARA MELHORADA COM BACKSPACE ======================
-document.getElementById("dumText").addEventListener("input", function(e) {
-    let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
-    
-    // Limita a 8 dígitos
+// ====================== MÁSCARA + ENTER ======================
+const dumInput = document.getElementById("dumText");
+
+// Máscara inteligente
+dumInput.addEventListener("input", function(e) {
+    let value = e.target.value.replace(/\D/g, '');
     if (value.length > 8) value = value.slice(0, 8);
 
-    // Formata com as barras
     let formatted = '';
     if (value.length > 0) formatted += value.slice(0, 2);
     if (value.length > 2) formatted += '/' + value.slice(2, 4);
     if (value.length > 4) formatted += '/' + value.slice(4, 8);
 
-    // Atualiza o valor
     e.target.value = formatted;
 });
 
-// Sincroniza quando seleciona no calendário
+// Permite calcular apertando ENTER
+dumInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault();   // evita comportamento padrão
+        calcular();
+    }
+});
+
+// Sincroniza calendário → campo de texto
 document.getElementById("dumHidden").addEventListener("change", function() {
     const hiddenDate = this.value;
     if (hiddenDate) {

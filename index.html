@@ -19,26 +19,30 @@ body { font-family: 'Poppins', sans-serif; }
     border-radius: 24px;
 }
 
+/* CORREÇÃO PARA CELULAR: Garante que os números da data apareçam pretos */
+input[type="date"] {
+    position: relative;
+    -webkit-appearance: none;
+    min-height: 3.5rem;
+    color: #000000 !important; /* Força cor preta no texto */
+}
+
+/* Estilo específico para navegadores mobile (iOS/Android) */
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+    color: #000000 !important;
+}
+
 /* PRINT / PDF */
 @media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #print-area, #print-area * {
-        visibility: visible;
-    }
-
-    #print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    .no-print {
-        display: none !important;
-    }
+    body * { visibility: hidden; }
+    #print-area, #print-area * { visibility: visible; }
+    #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
 }
 </style>
 </head>
@@ -47,14 +51,14 @@ body { font-family: 'Poppins', sans-serif; }
 
 <div class="hero text-white text-center py-10 no-print">
     <div class="flex items-center justify-center gap-4 px-4">
-        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
+        <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
         <div>
-            <h1 class="text-4xl font-bold">💖 Mamãe</h1>
-            <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
+            <h1 class="text-3xl font-bold">💖 Mamãe</h1>
+            <p class="text-pink-100 text-xs">Atacadão Farma Centro</p>
         </div>
-        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
+        <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
     </div>
-    <p class="mt-4 text-pink-100">
+    <p class="mt-4 text-pink-100 text-sm px-4">
         Descubra sua fase da gestação 💖
     </p>
 </div>
@@ -66,8 +70,8 @@ body { font-family: 'Poppins', sans-serif; }
         </label>
 
         <input type="date" id="dum"
-            min="2024-01-01" max="2026-12-31"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold outline-none focus:ring-2 focus:ring-pink-500">
+            min="2024-01-01" max="2027-12-31"
+            class="w-full p-4 rounded-xl bg-gray-100 text-black text-lg font-bold outline-none border-2 border-transparent focus:border-pink-500">
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
@@ -82,23 +86,23 @@ body { font-family: 'Poppins', sans-serif; }
 </div>
 
 <div id="print-area" class="max-w-md mx-auto px-6 mt-6">
-    <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
+    <div id="resultado" class="hidden bg-white p-6 rounded-3xl card mb-6">
         <div class="text-center">
-            <h2 class="text-4xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">~ de gestação</p>
+            <h2 class="text-3xl font-bold text-pink-600" id="semanas"></h2>
+            <p class="text-gray-500 mt-1">de gestação</p>
 
             <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
             <p class="text-gray-500 mt-2" id="dpp"></p>
         </div>
 
         <div class="mt-6 p-5 rounded-2xl bg-pink-50">
-            <p class="font-bold text-pink-700">💖 Dica e Suplementação:</p>
-            <p id="dica" class="text-sm leading-relaxed text-pink-900"></p>
+            <p class="font-bold text-pink-700 text-sm">💖 Dica e Suplementação:</p>
+            <p id="dica" class="text-sm leading-relaxed text-pink-900 mt-1"></p>
         </div>
 
         <div class="mt-5 p-5 rounded-2xl bg-blue-50">
-            <p class="font-bold text-blue-700">🤰 O que você pode sentir:</p>
-            <p id="sintomas" class="text-sm leading-relaxed text-blue-900"></p>
+            <p class="font-bold text-blue-700 text-sm">🤰 O que você pode sentir:</p>
+            <p id="sintomas" class="text-sm leading-relaxed text-blue-900 mt-1"></p>
         </div>
 
         <button onclick="salvarPDF()"
@@ -113,14 +117,14 @@ body { font-family: 'Poppins', sans-serif; }
         </button>
     </div>
 
-    <p class="text-[10px] text-gray-400 text-center mt-6 mb-10 no-print">
-        *Este cálculo é uma estimativa educativa. <br> 
+    <p class="text-[10px] text-gray-400 text-center mb-10 no-print px-4">
+        *Este cálculo é uma estimativa baseada em médias. <br> 
         Sempre consulte seu médico e evite a automedicação.
     </p>
 </div>
 
 <script>
-// FUNÇÃO PARA CALCULAR AO APERTAR ENTER
+// FUNÇÃO PARA CALCULAR AO APERTAR ENTER NO TECLADO
 document.getElementById("dum").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -130,64 +134,53 @@ document.getElementById("dum").addEventListener("keypress", function(event) {
 
 function calcular() {
     const dumInput = document.getElementById("dum").value;
-    const dum = new Date(dumInput);
+    if (!dumInput) {
+        alert("Por favor, selecione uma data válida.");
+        return;
+    }
+
+    // Ajuste de data para evitar erro de fuso horário
+    const dum = new Date(dumInput + 'T12:00:00');
     const hoje = new Date();
-
-    if (!dumInput || !dum.getTime()) {
-        alert("Selecione uma data válida");
-        return;
-    }
-
-    // Validação extra de segurança para o ano (impede mais de 4 dígitos manuais)
-    const anoSelecionado = dum.getFullYear();
-    if (anoSelecionado > 2099 || anoSelecionado < 1900) {
-        alert("Por favor, insira um ano válido com 4 dígitos.");
-        return;
-    }
-
     const dias = Math.floor((hoje - dum) / (1000 * 60 * 60 * 24));
     
     if (dias < 0) {
-        alert("A data não pode ser no futuro!");
+        alert("A data da menstruação não pode ser no futuro!");
         return;
     }
 
     const semanas = Math.floor(dias / 7);
     const diasRestantes = dias % 7;
-
     const parto = new Date(dum);
     parto.setDate(parto.getDate() + 280);
 
-    let trimestre = "";
-    let dica = "";
-    let sintomas = "";
+    let trimestre = "", dica = "", sintomas = "";
 
     if (semanas <= 12) {
         trimestre = "1º Trimestre (Fase de Formação)";
-        dica = "Fase do Ácido Fólico (importante para o sistema nervoso). Evite medicamentos sem orientação; o Paracetamol costuma ser a opção para dores sob orientação. Inicie seu pré-natal.";
-        sintomas = "Enjoos matinais, fadiga, sensibilidade nos seios e vontade frequente de urinar.";
+        dica = "Fase essencial do Ácido Fólico para o bebê. Evite medicamentos sem prescrição. Inicie seu pré-natal o quanto antes.";
+        sintomas = "Enjoos matinais, fadiga excessiva, sensibilidade nos seios e vontade frequente de urinar.";
     } else if (semanas <= 27) {
         trimestre = "2º Trimestre (Fase de Crescimento)";
-        dica = "Momento comum para iniciar Ferro e Cálcio. Use cremes hidratantes para prevenir estrias e mantenha uma boa hidratação.";
-        sintomas = "Mais energia, barriga crescendo, possíveis cãibras e você começará a sentir os chutes!";
+        dica = "Período comum para suplementação de Ferro e Cálcio. Use hidratantes para prevenir estrias e mantenha a hidratação em dia.";
+        sintomas = "Mais disposição, barriga aparecendo e os primeiros movimentos do bebê sendo sentidos.";
     } else if (semanas <= 42) {
         trimestre = "3º Trimestre (Fase de Preparação)";
-        dica = "Atenção ao Ômega 3 e controle da pressão. Organize sua mala da maternidade e tente descansar mais.";
-        sintomas = "Pés inchados, azia, falta de ar leve e contrações de treinamento.";
+        dica = "Atenção ao Ômega 3 (DHA) e controle da pressão arterial. Já pode preparar a mala da maternidade!";
+        sintomas = "Pés inchados, azia, leve falta de ar e contrações de treinamento.";
     } else {
         trimestre = "Pós-termo";
-        dica = "Procure seu obstetra para avaliação imediata.";
-        sintomas = "Ansiedade e pressão pélvica.";
+        dica = "Consulte seu obstetra imediatamente para avaliação de segurança.";
+        sintomas = "Ansiedade e pressão na região pélvica.";
     }
 
+    // Exibição do resultado
     document.getElementById("semanas").innerText = diasRestantes > 0 ? 
         semanas + " semanas e " + diasRestantes + " dias" : 
         semanas + " semanas";
 
     document.getElementById("trimestre").innerText = trimestre;
-    document.getElementById("dpp").innerText =
-        "Parto estimado: " + parto.toLocaleDateString("pt-BR");
-
+    document.getElementById("dpp").innerText = "Parto estimado: " + parto.toLocaleDateString("pt-BR");
     document.getElementById("dica").innerText = dica;
     document.getElementById("sintomas").innerText = sintomas;
 
@@ -195,15 +188,12 @@ function calcular() {
     document.getElementById("resultado").scrollIntoView({ behavior: 'smooth' });
 }
 
-function salvarPDF() {
-    window.print();
-}
+function salvarPDF() { window.print(); }
 
 function whats() {
-    const numero = "5561992186067";
     const semanasTexto = document.getElementById("semanas").innerText;
-    const msg = encodeURIComponent("Olá 💖 estou com " + semanasTexto + " e gostaria de conhecer os produtos ideais para minha fase.");
-    window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
+    const msg = encodeURIComponent("Olá 💖 estou com " + semanasTexto + " de gestação e gostaria de conhecer os produtos ideais para minha fase.");
+    window.open(`https://wa.me/5561992186067?text=${msg}`, "_blank");
 }
 
 function abrirPlataforma() {

@@ -19,15 +19,20 @@ body { font-family: 'Poppins', sans-serif; }
     border-radius: 24px;
 }
 
-/* CORREÇÃO PARA CELULAR: Garante que os números da data apareçam pretos */
+/* --- CORREÇÃO TOTAL PARA O CAMPO DE DATA NO CELULAR --- */
 input[type="date"] {
-    position: relative;
-    -webkit-appearance: none;
+    appearance: none;
+    -webkit-appearance: none; /* Remove estilo do iPhone/Android */
+    background-color: #ffffff !important; /* Força fundo branco */
+    color: #000000 !important; /* Força texto preto */
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 3.5rem;
-    color: #000000 !important; /* Força cor preta no texto */
 }
 
-/* Estilo específico para navegadores mobile (iOS/Android) */
+/* Garante que o texto dentro do seletor de data seja preto em qualquer celular */
 input[type="date"]::-webkit-datetime-edit,
 input[type="date"]::-webkit-datetime-edit-fields-wrapper,
 input[type="date"]::-webkit-datetime-edit-text,
@@ -35,6 +40,12 @@ input[type="date"]::-webkit-datetime-edit-month-field,
 input[type="date"]::-webkit-datetime-edit-day-field,
 input[type="date"]::-webkit-datetime-edit-year-field {
     color: #000000 !important;
+}
+
+/* Ajusta o ícone do calendário para aparecer no celular */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0); /* Garante que o ícone fique visível */
+    cursor: pointer;
 }
 
 /* PRINT / PDF */
@@ -58,28 +69,28 @@ input[type="date"]::-webkit-datetime-edit-year-field {
         </div>
         <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
     </div>
-    <p class="mt-4 text-pink-100 text-sm px-4">
+    <p class="mt-4 text-pink-100 text-sm px-4 font-medium">
         Descubra sua fase da gestação 💖
     </p>
 </div>
 
 <div class="max-w-md mx-auto px-6 -mt-10 no-print">
-    <div class="bg-white p-6 rounded-3xl card">
-        <label class="block font-semibold text-gray-600 mb-2">
+    <div class="bg-white p-6 rounded-3xl card border border-gray-100">
+        <label class="block font-bold text-gray-700 mb-3 text-center">
             Data da última menstruação (DUM)
         </label>
 
         <input type="date" id="dum"
             min="2024-01-01" max="2027-12-31"
-            class="w-full p-4 rounded-xl bg-gray-100 text-black text-lg font-bold outline-none border-2 border-transparent focus:border-pink-500">
+            class="w-full p-4 rounded-xl bg-white text-black text-lg font-bold outline-none border-2 border-pink-200 focus:border-pink-500 shadow-sm">
 
         <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
+            class="w-full mt-5 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition shadow-lg">
             CALCULAR GESTAÇÃO
         </button>
 
         <button onclick="abrirPlataforma()"
-            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
+            class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             🌐 Nossa Plataforma
         </button>
     </div>
@@ -89,18 +100,18 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     <div id="resultado" class="hidden bg-white p-6 rounded-3xl card mb-6">
         <div class="text-center">
             <h2 class="text-3xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">de gestação</p>
+            <p class="text-gray-500 mt-1 uppercase text-xs font-bold tracking-widest">de gestação</p>
 
-            <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
-            <p class="text-gray-500 mt-2" id="dpp"></p>
+            <p class="mt-4 font-extrabold text-gray-800 text-lg" id="trimestre"></p>
+            <p class="text-gray-500 mt-2 font-medium" id="dpp"></p>
         </div>
 
-        <div class="mt-6 p-5 rounded-2xl bg-pink-50">
+        <div class="mt-6 p-5 rounded-2xl bg-pink-50 border border-pink-100">
             <p class="font-bold text-pink-700 text-sm">💖 Dica e Suplementação:</p>
             <p id="dica" class="text-sm leading-relaxed text-pink-900 mt-1"></p>
         </div>
 
-        <div class="mt-5 p-5 rounded-2xl bg-blue-50">
+        <div class="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-100">
             <p class="font-bold text-blue-700 text-sm">🤰 O que você pode sentir:</p>
             <p id="sintomas" class="text-sm leading-relaxed text-blue-900 mt-1"></p>
         </div>
@@ -112,7 +123,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
         </button>
 
         <button onclick="whats()"
-            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
+            class="no-print w-full mt-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             📲 Ver produtos na loja
         </button>
     </div>

@@ -69,6 +69,12 @@ body { font-family: 'Poppins', sans-serif; }
             CALCULAR GESTAÇÃO
         </button>
 
+        <!-- BOTÃO PLATAFORMA -->
+        <button onclick="abrirPlataforma()"
+            class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl">
+            🌐 Nossa Plataforma
+        </button>
+
     </div>
 
     <!-- RESULTADO -->
@@ -97,7 +103,7 @@ body { font-family: 'Poppins', sans-serif; }
             </p>
         </div>
 
-        <!-- BOTÃO -->
+        <!-- BOTÃO WHATSAPP -->
         <button onclick="whats()"
             class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl">
             📲 Falar com a Farmácia
@@ -167,10 +173,14 @@ function whats() {
     const numero = "5561992186067";
 
     const msg = encodeURIComponent(
-        "Olá! Usei a calculadora de gestação 💖"
+        "Olá! Usei a calculadora de gestação 💖 e quero saber mais sobre os produtos indicados."
     );
 
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
+}
+
+function abrirPlataforma() {
+    window.open("https://atacadaofarma.base44.app/", "_blank");
 }
 
 </script>

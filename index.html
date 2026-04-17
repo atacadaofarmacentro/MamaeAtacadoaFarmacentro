@@ -18,39 +18,57 @@ body { font-family: 'Poppins', sans-serif; }
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
     border-radius: 24px;
 }
+
+/* 🔥 ESTILO DO PDF (quando imprimir) */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #print-area, #print-area * {
+        visibility: visible;
+    }
+
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
 </style>
 </head>
 
 <body class="bg-gray-50">
 
 <!-- HEADER -->
-<div class="hero text-white text-center py-10">
+<div class="hero text-white text-center py-10 no-print">
 
     <div class="flex items-center justify-center gap-4 px-4">
 
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow"
-             alt="logo esquerda">
+        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
 
         <div>
             <h1 class="text-4xl font-bold">💖 Mamãe</h1>
             <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
         </div>
 
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow"
-             alt="logo direita">
+        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
 
     </div>
 
     <p class="mt-4 text-pink-100">
-        Descubra sua fase da gestação e veja o que é comum em cada etapa 💖
+        Descubra sua fase da gestação 💖
     </p>
 
 </div>
 
 <!-- INPUT -->
-<div class="max-w-md mx-auto px-6 -mt-10">
+<div class="max-w-md mx-auto px-6 -mt-10 no-print">
 
     <div class="bg-white p-6 rounded-3xl card">
 
@@ -59,56 +77,57 @@ body { font-family: 'Poppins', sans-serif; }
         </label>
 
         <input type="date" id="dum"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold"
-            min="2000-01-01"
-            max="2099-12-31">
+            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
 
         <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 active:scale-95 transition transform hover:bg-pink-700 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl">
             CALCULAR GESTAÇÃO
         </button>
 
         <button onclick="abrirPlataforma()"
-            class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl">
             🌐 Nossa Plataforma
         </button>
 
     </div>
+</div>
 
-    <!-- RESULTADO -->
-    <div id="resultado" class="hidden bg-white p-6 rounded-3xl mt-6 card">
+<!-- RESULTADO (ÁREA DO PDF) -->
+<div id="print-area" class="max-w-md mx-auto px-6 mt-6">
+
+    <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
 
         <div class="text-center">
             <h2 class="text-5xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">~ semanas de gestação (estimativa)</p>
+            <p class="text-gray-500 mt-1">~ semanas de gestação</p>
 
             <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
             <p class="text-gray-500 mt-2" id="dpp"></p>
         </div>
 
-        <div class="mt-6 p-5 rounded-2xl bg-pink-50 border border-pink-100">
-            <p class="font-bold text-pink-700">💖 O que é comum nesta fase:</p>
-            <p id="dica" class="text-gray-700 mt-2"></p>
+        <div class="mt-6 p-5 rounded-2xl bg-pink-50">
+            <p class="font-bold text-pink-700">💖 Dica:</p>
+            <p id="dica"></p>
         </div>
 
-        <div class="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-100">
-            <p class="font-bold text-blue-700">🤰 Sintomas comuns desta fase:</p>
-            <p id="sintomas" class="text-gray-700 mt-2"></p>
-            <p class="text-xs text-gray-500 mt-2">
-                ✔ Essas mudanças são comuns na gestação. Em caso de dúvida, consulte seu médico.
-            </p>
+        <div class="mt-5 p-5 rounded-2xl bg-blue-50">
+            <p class="font-bold text-blue-700">🤰 Sintomas:</p>
+            <p id="sintomas"></p>
         </div>
 
-        <button onclick="whats()"
-            class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl">
-            📲 Ver produtos da minha fase
+        <!-- BOTÃO PDF -->
+        <button onclick="salvarPDF()"
+            class="no-print w-full mt-6 bg-black text-white font-bold py-4 rounded-2xl">
+            📄 Salvar em PDF
         </button>
 
-        <p class="text-xs text-gray-400 mt-3 text-center">
-            *Ferramenta informativa. Não substitui acompanhamento médico.
-        </p>
+        <button onclick="whats()"
+            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl">
+            📲 Ver produtos
+        </button>
 
     </div>
+
 </div>
 
 <script>
@@ -123,8 +142,7 @@ function calcular() {
         return;
     }
 
-    const diff = hoje - dum;
-    const dias = diff / (1000 * 60 * 60 * 24);
+    const dias = (hoje - dum) / (1000 * 60 * 60 * 24);
     const semanas = Math.floor(dias / 7);
 
     const parto = new Date(dum);
@@ -135,27 +153,23 @@ function calcular() {
     let sintomas = "";
 
     if (semanas <= 12) {
-        trimestre = "🌸 1º Trimestre";
-        dica = "O uso de ácido fólico e vitaminas pré-natais é frequentemente indicado pelo médico nesta fase.";
-        sintomas = "Enjoo, cansaço, sono excessivo e alterações hormonais.";
-    }
-
-    else if (semanas <= 27) {
-        trimestre = "🤰 2º Trimestre";
-        dica = "Suplementação com ferro, ômega 3 e cuidados com a pele são comuns conforme orientação médica.";
-        sintomas = "Mais energia, crescimento da barriga e leve dor lombar.";
-    }
-
-    else {
-        trimestre = "🐣 3º Trimestre";
-        dica = "Fase de preparação para o parto, com foco em cuidados finais e orientação médica.";
-        sintomas = "Inchaço, cansaço, falta de ar leve e contrações leves.";
+        trimestre = "1º Trimestre";
+        dica = "Uso de ácido fólico é comum nesta fase.";
+        sintomas = "Enjoo, cansaço e sono.";
+    } else if (semanas <= 27) {
+        trimestre = "2º Trimestre";
+        dica = "Fase de mais energia e crescimento do bebê.";
+        sintomas = "Barriga crescendo e dor lombar.";
+    } else {
+        trimestre = "3º Trimestre";
+        dica = "Preparação para o parto.";
+        sintomas = "Inchaço e contrações leves.";
     }
 
     document.getElementById("semanas").innerText = semanas;
     document.getElementById("trimestre").innerText = trimestre;
     document.getElementById("dpp").innerText =
-        "Data provável do parto: " + parto.toLocaleDateString("pt-BR");
+        "Parto estimado: " + parto.toLocaleDateString("pt-BR");
 
     document.getElementById("dica").innerText = dica;
     document.getElementById("sintomas").innerText = sintomas;
@@ -163,25 +177,13 @@ function calcular() {
     document.getElementById("resultado").classList.remove("hidden");
 }
 
-/* ENTER FUNCIONANDO (PC + CELULAR) */
-document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("dum");
-
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            calcular();
-        }
-    });
-});
+function salvarPDF() {
+    window.print();
+}
 
 function whats() {
     const numero = "5561992186067";
-
-    const msg = encodeURIComponent(
-        "Olá 💖 acabei de usar a calculadora de gestação e quero ver os produtos recomendados para minha fase."
-    );
-
+    const msg = encodeURIComponent("Olá 💖 quero ver produtos da minha fase");
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
 }
 

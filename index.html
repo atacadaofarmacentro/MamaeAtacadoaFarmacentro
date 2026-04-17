@@ -4,61 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mamãe - Atacadão Farma Centro</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
-
 <style>
 body { font-family: 'Poppins', sans-serif; }
-
 .hero {
     background: linear-gradient(135deg, #ec4899, #be185d);
 }
-
 .card {
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
     border-radius: 24px;
 }
-
-/* --- SOLUÇÃO DEFINITIVA PARA COR DA DATA NO CELULAR --- */
-#dum {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    background-color: #FFFFFF !important; /* Fundo sempre branco */
-    color: #000000 !important; /* Texto sempre preto */
-    opacity: 1 !important;
-}
-
-/* Força a cor preta em todos os estados do campo de data */
-#dum::-webkit-datetime-edit,
-#dum::-webkit-datetime-edit-fields-wrapper,
-#dum::-webkit-datetime-edit-text,
-#dum::-webkit-datetime-edit-month-field,
-#dum::-webkit-datetime-edit-day-field,
-#dum::-webkit-datetime-edit-year-field {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-}
-
-/* Garante que o ícone do calendário apareça */
-#dum::-webkit-calendar-picker-indicator {
-    display: block !important;
-    background-color: transparent !important;
-    filter: invert(0) !important;
-}
-
-/* PRINT / PDF */
-@media print {
-    body * { visibility: hidden; }
-    #print-area, #print-area * { visibility: visible; }
-    #print-area { position: absolute; left: 0; top: 0; width: 100%; }
-    .no-print { display: none !important; }
-}
 </style>
 </head>
-
 <body class="bg-gray-50">
-
 <div class="hero text-white text-center py-10 no-print">
     <div class="flex items-center justify-center gap-4 px-4">
         <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
@@ -75,16 +33,23 @@ body { font-family: 'Poppins', sans-serif; }
         <label class="block font-bold text-gray-700 mb-3 text-center uppercase text-xs tracking-wider">
             Data da última menstruação (DUM)
         </label>
-
-        <input type="date" id="dum"
-            min="2024-01-01" max="2027-12-31"
-            class="w-full p-4 rounded-xl text-lg font-bold outline-none border-2 border-pink-100 focus:border-pink-500 shadow-inner">
+        
+        <!-- === CAMPO DE DATA CORRIGIDO (só essa parte mudou) === -->
+        <div class="relative">
+            <input 
+                type="text" 
+                id="dum"
+                maxlength="10"
+                placeholder="dd/mm/aaaa"
+                class="w-full p-4 rounded-xl text-lg font-bold outline-none border-2 border-pink-100 focus:border-pink-500 shadow-inner text-center">
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-400 pointer-events-none">📅</span>
+        </div>
+        <!-- ==================================================== -->
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition shadow-lg">
             CALCULAR GESTAÇÃO
         </button>
-
         <button onclick="abrirPlataforma()"
             class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             🌐 Nossa Plataforma
@@ -97,59 +62,70 @@ body { font-family: 'Poppins', sans-serif; }
         <div class="text-center">
             <h2 class="text-3xl font-bold text-pink-600" id="semanas"></h2>
             <p class="text-gray-500 mt-1 uppercase text-[10px] font-bold tracking-widest">de gestação</p>
-
             <p class="mt-4 font-extrabold text-gray-800 text-lg" id="trimestre"></p>
             <p class="text-gray-500 mt-2 font-medium" id="dpp"></p>
         </div>
-
         <div class="mt-6 p-5 rounded-2xl bg-pink-50 border border-pink-100">
             <p class="font-bold text-pink-700 text-sm">💖 Dica e Suplementação:</p>
             <p id="dica" class="text-sm leading-relaxed text-pink-900 mt-1"></p>
         </div>
-
         <div class="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-100">
             <p class="font-bold text-blue-700 text-sm">🤰 O que você pode sentir:</p>
             <p id="sintomas" class="text-sm leading-relaxed text-blue-900 mt-1"></p>
         </div>
-
         <button onclick="salvarPDF()"
             class="no-print w-full mt-6 text-white font-bold py-4 rounded-2xl
             bg-gradient-to-r from-pink-500 to-purple-600 active:scale-95 transition">
             📄 Salvar em PDF
         </button>
-
         <button onclick="whats()"
             class="no-print w-full mt-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             📲 Ver produtos na loja
         </button>
     </div>
-
     <p class="text-[10px] text-gray-400 text-center mb-10 no-print px-4 italic">
-        *Este cálculo é uma estimativa educativa. <br> 
+        *Este cálculo é uma estimativa educativa. <br>
         Sempre consulte seu médico e evite a automedicação.
     </p>
 </div>
 
 <script>
-// FUNÇÃO PARA CALCULAR AO APERTAR ENTER
-document.getElementById("dum").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        calcular();
-    }
+// ====================== MÁSCARA DE DATA ======================
+document.getElementById("dum").addEventListener("input", function(e) {
+    let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
+    
+    if (value.length > 8) value = value.slice(0, 8);
+    
+    if (value.length >= 2) value = value.slice(0,2) + '/' + value.slice(2);
+    if (value.length >= 5) value = value.slice(0,5) + '/' + value.slice(5);
+    
+    e.target.value = value;
 });
 
+// ====================== FUNÇÃO CALCULAR ======================
 function calcular() {
-    const dumInput = document.getElementById("dum").value;
-    if (!dumInput) {
-        alert("Por favor, selecione uma data.");
+    let dumStr = document.getElementById("dum").value.trim();
+    
+    if (!dumStr || dumStr.length !== 10) {
+        alert("Por favor, insira a data no formato dd/mm/aaaa");
         return;
     }
 
-    const dum = new Date(dumInput + 'T12:00:00');
+    // Converte dd/mm/aaaa para objeto Date
+    const [dia, mes, ano] = dumStr.split('/').map(Number);
+    const dum = new Date(ano, mes - 1, dia);
+
+    if (isNaN(dum.getTime())) {
+        alert("Data inválida! Verifique o formato dd/mm/aaaa");
+        return;
+    }
+
     const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+    dum.setHours(0,0,0,0);
+
     const dias = Math.floor((hoje - dum) / (1000 * 60 * 60 * 24));
-    
+   
     if (dias < 0) {
         alert("A data não pode ser no futuro!");
         return;
@@ -157,6 +133,7 @@ function calcular() {
 
     const semanas = Math.floor(dias / 7);
     const diasRestantes = dias % 7;
+
     const parto = new Date(dum);
     parto.setDate(parto.getDate() + 280);
 
@@ -180,8 +157,8 @@ function calcular() {
         sintomas = "Cansaço físico e ansiedade.";
     }
 
-    document.getElementById("semanas").innerText = diasRestantes > 0 ? 
-        semanas + " semanas e " + diasRestantes + " dias" : 
+    document.getElementById("semanas").innerText = diasRestantes > 0 ?
+        semanas + " semanas e " + diasRestantes + " dias" :
         semanas + " semanas";
 
     document.getElementById("trimestre").innerText = trimestre;
@@ -205,6 +182,5 @@ function abrirPlataforma() {
     window.open("https://atacadaofarma.base44.app/", "_blank");
 }
 </script>
-
 </body>
 </html>

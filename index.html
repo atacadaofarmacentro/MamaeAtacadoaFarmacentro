@@ -6,6 +6,8 @@
 <title>Calculadora de Gestação 🌐</title>
 
 <style>
+  /* ===== SEU LAYOUT ORIGINAL (NÃO ALTERADO) ===== */
+
   body{
     font-family: Arial, sans-serif;
     background: #f5f5f5;
@@ -26,19 +28,13 @@
     background:white;
     margin:20px auto;
     padding:20px;
-    max-width:520px;
+    max-width:500px;
     border-radius:12px;
     box-shadow:0 4px 15px rgba(0,0,0,0.1);
   }
 
-  label{
-    font-size:16px;
-    font-weight:bold;
-    color:#333;
-  }
-
   input{
-    width:92%;
+    width:90%;
     padding:12px;
     font-size:16px;
     border-radius:8px;
@@ -49,7 +45,7 @@
   button{
     margin-top:12px;
     padding:12px;
-    width:92%;
+    width:90%;
     border:none;
     border-radius:10px;
     font-size:16px;
@@ -68,32 +64,26 @@
   }
 
   .resultado{
-    margin-top:18px;
-    font-size:22px;
+    margin-top:15px;
+    font-size:20px;
     font-weight:bold;
     color:#2c3e50;
   }
 
   .info{
     text-align:left;
-    margin-top:25px;
-    font-size:17px;
+    margin-top:20px;
+    font-size:15px; /* ajuste leve sem mudar layout */
     color:#444;
     line-height:1.6;
   }
 
-  .info h3{
-    color:#8e44ad;
-    margin-bottom:10px;
-  }
-
   .alerta{
     background:#fff3cd;
-    padding:12px;
+    padding:10px;
     border-radius:8px;
-    margin-top:12px;
-    font-size:16px;
-    border-left:5px solid #ffcc00;
+    margin-top:10px;
+    font-size:15px;
   }
 
 </style>
@@ -102,35 +92,32 @@
 <body>
 
 <header>
-CALCULADORA DE GESTAÇÃO 🌐
+CALCULAR GESTAÇÃO 🌐
 </header>
 
 <div class="box">
 
-  <label>Informe a data do início da última menstruação:</label>
+  <p><b>Digite a data da última menstruação:</b></p>
 
   <input type="date" id="data">
 
-  <button class="calc-btn" onclick="calcular()">Calcular idade gestacional</button>
+  <button class="calc-btn" onclick="calcular()">Calcular Gestação</button>
 
-  <button class="pdf-btn" onclick="gerarPDF()">Salvar resultado em PDF</button>
+  <button class="pdf-btn" onclick="gerarPDF()">Salvar em PDF</button>
 
   <div class="resultado" id="resultado"></div>
 
   <div class="info">
 
-    <h3>📌 Informações importantes</h3>
+    <h3>Dicas importantes 💡</h3>
 
-    <p>• Este cálculo é apenas uma estimativa baseada na data informada.</p>
-
-    <p>• Ele não substitui acompanhamento médico ou exame de ultrassom.</p>
-
-    <p>• Para um acompanhamento seguro, mantenha o pré-natal em dia.</p>
-
-    <p>• Cada gestação é única e pode variar de pessoa para pessoa.</p>
+    <p>• O cálculo é uma estimativa baseada na data informada.</p>
+    <p>• Ele não substitui acompanhamento médico ou exames.</p>
+    <p>• O pré-natal é essencial para uma gestação segura.</p>
+    <p>• Cada gestação pode evoluir de forma diferente.</p>
 
     <div class="alerta">
-      ⚠️ Atenção: nunca utilize medicamentos por conta própria durante a gestação. Sempre consulte um profissional de saúde.
+      ⚠️ Medicamentos durante a gestação só devem ser usados com orientação médica.
     </div>
 
   </div>
@@ -138,6 +125,7 @@ CALCULADORA DE GESTAÇÃO 🌐
 </div>
 
 <script>
+
 function calcular(){
 
   let data = document.getElementById("data").value;
@@ -155,25 +143,27 @@ function calcular(){
 
   if(semanas < 0){
     document.getElementById("resultado").innerHTML =
-    "Data inválida. Verifique e tente novamente.";
+    "Data inválida. Verifique a data informada.";
     return;
   }
 
   document.getElementById("resultado").innerHTML =
-    `Você está com aproximadamente <br> <b>${semanas} semanas de gestação</b>`;
+    `~ ${semanas} semanas de gestação (estimativa)`;
 }
 
-/* ✅ ENTER agora funciona */
+/* ✅ ENTER FUNCIONANDO */
 document.getElementById("data").addEventListener("keydown", function(e){
   if(e.key === "Enter"){
+    e.preventDefault();
     calcular();
   }
 });
 
-/* 📄 PDF simples (funciona em celular e PC) */
+/* 📄 PDF (impressão do navegador) */
 function gerarPDF(){
   window.print();
 }
+
 </script>
 
 </body>

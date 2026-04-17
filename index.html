@@ -3,197 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mamãe - Atacadão Farma Centro</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Calculadora de Gestação 🌐</title>
 
 <style>
-body { font-family: 'Poppins', sans-serif; }
+  body{
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin:0;
+    padding:0;
+    text-align:center;
+  }
 
-.hero {
-    background: linear-gradient(135deg, #ec4899, #be185d);
-}
+  header{
+    background: linear-gradient(90deg,#ff4da6,#8e44ad,#2ecc71);
+    color:white;
+    padding:20px;
+    font-size:22px;
+    font-weight:bold;
+  }
 
-.card {
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-    border-radius: 24px;
-}
+  .box{
+    background:white;
+    margin:20px auto;
+    padding:20px;
+    max-width:520px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  }
 
-/* PRINT / PDF */
-@media print {
-    body * {
-        visibility: hidden;
-    }
+  label{
+    font-size:16px;
+    font-weight:bold;
+    color:#333;
+  }
 
-    #print-area, #print-area * {
-        visibility: visible;
-    }
+  input{
+    width:92%;
+    padding:12px;
+    font-size:16px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    margin-top:10px;
+  }
 
-    #print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
+  button{
+    margin-top:12px;
+    padding:12px;
+    width:92%;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+  }
 
-    .no-print {
-        display: none !important;
-    }
-}
+  .calc-btn{
+    background:#8e44ad;
+    color:white;
+  }
+
+  .pdf-btn{
+    background: linear-gradient(90deg,#ff4da6,#8e44ad,#2ecc71);
+    color:white;
+  }
+
+  .resultado{
+    margin-top:18px;
+    font-size:22px;
+    font-weight:bold;
+    color:#2c3e50;
+  }
+
+  .info{
+    text-align:left;
+    margin-top:25px;
+    font-size:17px;
+    color:#444;
+    line-height:1.6;
+  }
+
+  .info h3{
+    color:#8e44ad;
+    margin-bottom:10px;
+  }
+
+  .alerta{
+    background:#fff3cd;
+    padding:12px;
+    border-radius:8px;
+    margin-top:12px;
+    font-size:16px;
+    border-left:5px solid #ffcc00;
+  }
+
 </style>
 </head>
 
-<body class="bg-gray-50">
+<body>
 
-<!-- HEADER -->
-<div class="hero text-white text-center py-10 no-print">
+<header>
+CALCULADORA DE GESTAÇÃO 🌐
+</header>
 
-    <div class="flex items-center justify-center gap-4 px-4">
+<div class="box">
 
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
+  <label>Informe a data do início da última menstruação:</label>
 
-        <div>
-            <h1 class="text-4xl font-bold">💖 Mamãe</h1>
-            <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
-        </div>
+  <input type="date" id="data">
 
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
+  <button class="calc-btn" onclick="calcular()">Calcular idade gestacional</button>
 
+  <button class="pdf-btn" onclick="gerarPDF()">Salvar resultado em PDF</button>
+
+  <div class="resultado" id="resultado"></div>
+
+  <div class="info">
+
+    <h3>📌 Informações importantes</h3>
+
+    <p>• Este cálculo é apenas uma estimativa baseada na data informada.</p>
+
+    <p>• Ele não substitui acompanhamento médico ou exame de ultrassom.</p>
+
+    <p>• Para um acompanhamento seguro, mantenha o pré-natal em dia.</p>
+
+    <p>• Cada gestação é única e pode variar de pessoa para pessoa.</p>
+
+    <div class="alerta">
+      ⚠️ Atenção: nunca utilize medicamentos por conta própria durante a gestação. Sempre consulte um profissional de saúde.
     </div>
 
-    <p class="mt-4 text-pink-100">
-        Descubra sua fase da gestação 💖
-    </p>
-
-</div>
-
-<!-- INPUT -->
-<div class="max-w-md mx-auto px-6 -mt-10 no-print">
-
-    <div class="bg-white p-6 rounded-3xl card">
-
-        <label class="block font-semibold text-gray-600 mb-2">
-            Data da última menstruação (DUM)
-        </label>
-
-        <input type="date" id="dum"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
-
-        <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            CALCULAR GESTAÇÃO
-        </button>
-
-        <button onclick="abrirPlataforma()"
-            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            🌐 Nossa Plataforma
-        </button>
-
-    </div>
-</div>
-
-<!-- RESULTADO / PDF -->
-<div id="print-area" class="max-w-md mx-auto px-6 mt-6">
-
-    <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
-
-        <div class="text-center">
-            <h2 class="text-5xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">~ semanas de gestação</p>
-
-            <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
-            <p class="text-gray-500 mt-2" id="dpp"></p>
-        </div>
-
-        <div class="mt-6 p-5 rounded-2xl bg-pink-50">
-            <p class="font-bold text-pink-700">💖 Dica:</p>
-            <p id="dica"></p>
-        </div>
-
-        <div class="mt-5 p-5 rounded-2xl bg-blue-50">
-            <p class="font-bold text-blue-700">🤰 Sintomas:</p>
-            <p id="sintomas"></p>
-        </div>
-
-        <!-- BOTÕES FINAIS -->
-        <button onclick="salvarPDF()"
-            class="no-print w-full mt-6 text-white font-bold py-4 rounded-2xl
-            bg-gradient-to-r from-pink-500 to-purple-600 active:scale-95 transition">
-            📄 Salvar em PDF
-        </button>
-
-        <button onclick="whats()"
-            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            📲 Ver produtos
-        </button>
-
-    </div>
+  </div>
 
 </div>
 
 <script>
+function calcular(){
 
-function calcular() {
+  let data = document.getElementById("data").value;
 
-    const dum = new Date(document.getElementById("dum").value);
-    const hoje = new Date();
+  if(!data){
+    alert("Por favor, selecione uma data.");
+    return;
+  }
 
-    if (!dum.getTime()) {
-        alert("Selecione uma data válida");
-        return;
-    }
+  let inicio = new Date(data);
+  let hoje = new Date();
 
-    const dias = (hoje - dum) / (1000 * 60 * 60 * 24);
-    const semanas = Math.floor(dias / 7);
+  let diff = hoje - inicio;
+  let semanas = Math.floor(diff / (1000 * 60 * 60 * 24 * 7));
 
-    const parto = new Date(dum);
-    parto.setDate(parto.getDate() + 280);
+  if(semanas < 0){
+    document.getElementById("resultado").innerHTML =
+    "Data inválida. Verifique e tente novamente.";
+    return;
+  }
 
-    let trimestre = "";
-    let dica = "";
-    let sintomas = "";
-
-    if (semanas <= 12) {
-        trimestre = "1º Trimestre";
-        dica = "Uso de ácido fólico é comum nesta fase.";
-        sintomas = "Enjoo, cansaço e sono.";
-    } else if (semanas <= 27) {
-        trimestre = "2º Trimestre";
-        dica = "Fase de mais energia e crescimento do bebê.";
-        sintomas = "Barriga crescendo e dor lombar.";
-    } else {
-        trimestre = "3º Trimestre";
-        dica = "Preparação para o parto.";
-        sintomas = "Inchaço e contrações leves.";
-    }
-
-    document.getElementById("semanas").innerText = semanas;
-    document.getElementById("trimestre").innerText = trimestre;
-    document.getElementById("dpp").innerText =
-        "Parto estimado: " + parto.toLocaleDateString("pt-BR");
-
-    document.getElementById("dica").innerText = dica;
-    document.getElementById("sintomas").innerText = sintomas;
-
-    document.getElementById("resultado").classList.remove("hidden");
+  document.getElementById("resultado").innerHTML =
+    `Você está com aproximadamente <br> <b>${semanas} semanas de gestação</b>`;
 }
 
-function salvarPDF() {
-    window.print();
-}
+/* ✅ ENTER agora funciona */
+document.getElementById("data").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    calcular();
+  }
+});
 
-function whats() {
-    const numero = "5561992186067";
-    const msg = encodeURIComponent("Olá 💖 quero ver produtos da minha fase");
-    window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
+/* 📄 PDF simples (funciona em celular e PC) */
+function gerarPDF(){
+  window.print();
 }
-
-function abrirPlataforma() {
-    window.open("https://atacadaofarma.base44.app/", "_blank");
-}
-
 </script>
 
 </body>

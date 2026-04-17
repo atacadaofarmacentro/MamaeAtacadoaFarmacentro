@@ -19,33 +19,32 @@ body { font-family: 'Poppins', sans-serif; }
     border-radius: 24px;
 }
 
-/* --- CORREÇÃO TOTAL PARA O CAMPO DE DATA NO CELULAR --- */
-input[type="date"] {
-    appearance: none;
-    -webkit-appearance: none; /* Remove estilo do iPhone/Android */
-    background-color: #ffffff !important; /* Força fundo branco */
-    color: #000000 !important; /* Força texto preto */
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 3.5rem;
+/* --- SOLUÇÃO DEFINITIVA PARA COR DA DATA NO CELULAR --- */
+#dum {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-color: #FFFFFF !important; /* Fundo sempre branco */
+    color: #000000 !important; /* Texto sempre preto */
+    opacity: 1 !important;
 }
 
-/* Garante que o texto dentro do seletor de data seja preto em qualquer celular */
-input[type="date"]::-webkit-datetime-edit,
-input[type="date"]::-webkit-datetime-edit-fields-wrapper,
-input[type="date"]::-webkit-datetime-edit-text,
-input[type="date"]::-webkit-datetime-edit-month-field,
-input[type="date"]::-webkit-datetime-edit-day-field,
-input[type="date"]::-webkit-datetime-edit-year-field {
+/* Força a cor preta em todos os estados do campo de data */
+#dum::-webkit-datetime-edit,
+#dum::-webkit-datetime-edit-fields-wrapper,
+#dum::-webkit-datetime-edit-text,
+#dum::-webkit-datetime-edit-month-field,
+#dum::-webkit-datetime-edit-day-field,
+#dum::-webkit-datetime-edit-year-field {
     color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
 }
 
-/* Ajusta o ícone do calendário para aparecer no celular */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0); /* Garante que o ícone fique visível */
-    cursor: pointer;
+/* Garante que o ícone do calendário apareça */
+#dum::-webkit-calendar-picker-indicator {
+    display: block !important;
+    background-color: transparent !important;
+    filter: invert(0) !important;
 }
 
 /* PRINT / PDF */
@@ -65,24 +64,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
         <div>
             <h1 class="text-3xl font-bold">💖 Mamãe</h1>
-            <p class="text-pink-100 text-xs">Atacadão Farma Centro</p>
+            <p class="text-pink-100 text-xs font-semibold">Atacadão Farma Centro</p>
         </div>
         <img src="imagens/atacadao.png" class="w-20 h-20 rounded-full bg-white p-2 shadow">
     </div>
-    <p class="mt-4 text-pink-100 text-sm px-4 font-medium">
-        Descubra sua fase da gestação 💖
-    </p>
 </div>
 
 <div class="max-w-md mx-auto px-6 -mt-10 no-print">
     <div class="bg-white p-6 rounded-3xl card border border-gray-100">
-        <label class="block font-bold text-gray-700 mb-3 text-center">
+        <label class="block font-bold text-gray-700 mb-3 text-center uppercase text-xs tracking-wider">
             Data da última menstruação (DUM)
         </label>
 
         <input type="date" id="dum"
             min="2024-01-01" max="2027-12-31"
-            class="w-full p-4 rounded-xl bg-white text-black text-lg font-bold outline-none border-2 border-pink-200 focus:border-pink-500 shadow-sm">
+            class="w-full p-4 rounded-xl text-lg font-bold outline-none border-2 border-pink-100 focus:border-pink-500 shadow-inner">
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition shadow-lg">
@@ -100,7 +96,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     <div id="resultado" class="hidden bg-white p-6 rounded-3xl card mb-6">
         <div class="text-center">
             <h2 class="text-3xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1 uppercase text-xs font-bold tracking-widest">de gestação</p>
+            <p class="text-gray-500 mt-1 uppercase text-[10px] font-bold tracking-widest">de gestação</p>
 
             <p class="mt-4 font-extrabold text-gray-800 text-lg" id="trimestre"></p>
             <p class="text-gray-500 mt-2 font-medium" id="dpp"></p>
@@ -128,14 +124,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         </button>
     </div>
 
-    <p class="text-[10px] text-gray-400 text-center mb-10 no-print px-4">
-        *Este cálculo é uma estimativa baseada em médias. <br> 
+    <p class="text-[10px] text-gray-400 text-center mb-10 no-print px-4 italic">
+        *Este cálculo é uma estimativa educativa. <br> 
         Sempre consulte seu médico e evite a automedicação.
     </p>
 </div>
 
 <script>
-// FUNÇÃO PARA CALCULAR AO APERTAR ENTER NO TECLADO
+// FUNÇÃO PARA CALCULAR AO APERTAR ENTER
 document.getElementById("dum").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -146,17 +142,16 @@ document.getElementById("dum").addEventListener("keypress", function(event) {
 function calcular() {
     const dumInput = document.getElementById("dum").value;
     if (!dumInput) {
-        alert("Por favor, selecione uma data válida.");
+        alert("Por favor, selecione uma data.");
         return;
     }
 
-    // Ajuste de data para evitar erro de fuso horário
     const dum = new Date(dumInput + 'T12:00:00');
     const hoje = new Date();
     const dias = Math.floor((hoje - dum) / (1000 * 60 * 60 * 24));
     
     if (dias < 0) {
-        alert("A data da menstruação não pode ser no futuro!");
+        alert("A data não pode ser no futuro!");
         return;
     }
 
@@ -169,23 +164,22 @@ function calcular() {
 
     if (semanas <= 12) {
         trimestre = "1º Trimestre (Fase de Formação)";
-        dica = "Fase essencial do Ácido Fólico para o bebê. Evite medicamentos sem prescrição. Inicie seu pré-natal o quanto antes.";
-        sintomas = "Enjoos matinais, fadiga excessiva, sensibilidade nos seios e vontade frequente de urinar.";
+        dica = "Fase essencial do Ácido Fólico. Evite medicamentos sem prescrição médica. Inicie seu pré-natal.";
+        sintomas = "Enjoos matinais, fadiga, sensibilidade nos seios e sono frequente.";
     } else if (semanas <= 27) {
         trimestre = "2º Trimestre (Fase de Crescimento)";
-        dica = "Período comum para suplementação de Ferro e Cálcio. Use hidratantes para prevenir estrias e mantenha a hidratação em dia.";
-        sintomas = "Mais disposição, barriga aparecendo e os primeiros movimentos do bebê sendo sentidos.";
+        dica = "Momento de Ferro e Cálcio. Use hidratantes para evitar estrias e beba bastante água.";
+        sintomas = "Barriga crescendo, mais disposição e os primeiros movimentos do bebê.";
     } else if (semanas <= 42) {
         trimestre = "3º Trimestre (Fase de Preparação)";
-        dica = "Atenção ao Ômega 3 (DHA) e controle da pressão arterial. Já pode preparar a mala da maternidade!";
-        sintomas = "Pés inchados, azia, leve falta de ar e contrações de treinamento.";
+        dica = "Atenção ao Ômega 3. Monitore sua pressão e prepare sua mala da maternidade.";
+        sintomas = "Inchaço nos pés, azia, falta de ar leve e contrações de treinamento.";
     } else {
         trimestre = "Pós-termo";
-        dica = "Consulte seu obstetra imediatamente para avaliação de segurança.";
-        sintomas = "Ansiedade e pressão na região pélvica.";
+        dica = "Procure seu médico para avaliação.";
+        sintomas = "Cansaço físico e ansiedade.";
     }
 
-    // Exibição do resultado
     document.getElementById("semanas").innerText = diasRestantes > 0 ? 
         semanas + " semanas e " + diasRestantes + " dias" : 
         semanas + " semanas";
@@ -203,7 +197,7 @@ function salvarPDF() { window.print(); }
 
 function whats() {
     const semanasTexto = document.getElementById("semanas").innerText;
-    const msg = encodeURIComponent("Olá 💖 estou com " + semanasTexto + " de gestação e gostaria de conhecer os produtos ideais para minha fase.");
+    const msg = encodeURIComponent("Olá 💖 estou com " + semanasTexto + " de gestação e quero ver os produtos recomendados.");
     window.open(`https://wa.me/5561992186067?text=${msg}`, "_blank");
 }
 

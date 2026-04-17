@@ -1,142 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mamãe - Atacadão Farma Centro</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-body { font-family: 'Poppins', sans-serif; }
-
-.hero {
-    background: linear-gradient(135deg, #ec4899, #be185d);
-}
-
-.card {
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-    border-radius: 24px;
-}
-
-/* PRINT / PDF */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #print-area, #print-area * {
-        visibility: visible;
-    }
-
-    #print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    .no-print {
-        display: none !important;
-    }
-}
-</style>
-</head>
-
-<body class="bg-gray-50">
-
-<!-- HEADER -->
-<div class="hero text-white text-center py-10 no-print">
-
-    <div class="flex items-center justify-center gap-4 px-4">
-
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
-
-        <div>
-            <h1 class="text-4xl font-bold">💖 Mamãe</h1>
-            <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
-        </div>
-
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
-
-    </div>
-
-    <p class="mt-4 text-pink-100">
-        Descubra sua fase da gestação 💖
-    </p>
-
-</div>
-
-<!-- INPUT -->
-<div class="max-w-md mx-auto px-6 -mt-10 no-print">
-
-    <div class="bg-white p-6 rounded-3xl card">
-
-        <label class="block font-semibold text-gray-600 mb-2">
-            Data da última menstruação (DUM)
-        </label>
-
-        <input type="date" id="dum"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
-
-        <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            CALCULAR GESTAÇÃO
-        </button>
-
-        <button onclick="abrirPlataforma()"
-            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            🌐 Nossa Plataforma
-        </button>
-
-    </div>
-</div>
-
-<!-- RESULTADO / PDF -->
-<div id="print-area" class="max-w-md mx-auto px-6 mt-6">
-
-    <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
-
-        <div class="text-center">
-            <h2 class="text-5xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">~ semanas de gestação</p>
-
-            <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
-            <p class="text-gray-500 mt-2" id="dpp"></p>
-        </div>
-
-        <div class="mt-6 p-5 rounded-2xl bg-pink-50">
-            <p class="font-bold text-pink-700">💖 Dica:</p>
-            <p id="dica"></p>
-        </div>
-
-        <div class="mt-5 p-5 rounded-2xl bg-blue-50">
-            <p class="font-bold text-blue-700">🤰 Sintomas:</p>
-            <p id="sintomas"></p>
-        </div>
-
-        <!-- BOTÕES FINAIS -->
-        <button onclick="salvarPDF()"
-            class="no-print w-full mt-6 text-white font-bold py-4 rounded-2xl
-            bg-gradient-to-r from-pink-500 to-purple-600 active:scale-95 transition">
-            📄 Salvar em PDF
-        </button>
-
-        <button onclick="whats()"
-            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
-            📲 Ver produtos
-        </button>
-
-    </div>
-
-</div>
-
-<script>
-
 function calcular() {
-
     const dum = new Date(document.getElementById("dum").value);
     const hoje = new Date();
 
@@ -156,22 +18,26 @@ function calcular() {
     let sintomas = "";
 
     if (semanas <= 12) {
-        trimestre = "1º Trimestre";
-        dica = "Uso de ácido fólico é comum nesta fase.";
-        sintomas = "Enjoo, cansaço e sono.";
+        trimestre = "1º Trimestre (Fase de Formação)";
+        dica = "Momento crucial para o Ácido Fólico (previne defeitos no tubo neural). Evite automedicação; para dores, o Paracetamol é geralmente o mais indicado, mas consulte seu médico. Inicie o pré-natal imediatamente.";
+        sintomas = "Náuseas matinais, sensibilidade nos seios, fadiga extrema, variação de humor e aumento da frequência urinária.";
     } else if (semanas <= 27) {
-        trimestre = "2º Trimestre";
-        dica = "Fase de mais energia e crescimento do bebê.";
-        sintomas = "Barriga crescendo e dor lombar.";
+        trimestre = "2º Trimestre (Fase de Crescimento)";
+        dica = "Geralmente inicia-se a suplementação de Ferro e Cálcio. Mantenha a hidratação para evitar infecção urinária. Use cremes antiestrias. É a fase ideal para realizar o ultrassom morfológico.";
+        sintomas = "Diminuição dos enjoos, surgimento da 'linha nigra' no abdômen, possíveis cãibras noturnas e os primeiros movimentos do bebê.";
+    } else if (semanas <= 42) {
+        trimestre = "3º Trimestre (Fase de Preparação)";
+        dica = "Foco em Ômega 3 (DHA) para o cérebro do bebê. Atenção à pressão arterial. Organize a mala da maternidade. Se houver contrações ritmadas ou perda de líquido, procure o hospital.";
+        sintomas = "Inchaço nos pés e mãos, falta de ar (compressão do diafragma), azia, dor lombar e dificuldade para dormir.";
     } else {
-        trimestre = "3º Trimestre";
-        dica = "Preparação para o parto.";
-        sintomas = "Inchaço e contrações leves.";
+        trimestre = "Pós-termo";
+        dica = "Consulte seu obstetra urgentemente para monitorar o bem-estar do bebê.";
+        sintomas = "Ansiedade e pressão pélvica intensa.";
     }
 
     document.getElementById("semanas").innerText = semanas;
     document.getElementById("trimestre").innerText = trimestre;
-    document.getElementById("dpp").innerText =
+    document.getElementById("dpp").innerText = 
         "Parto estimado: " + parto.toLocaleDateString("pt-BR");
 
     document.getElementById("dica").innerText = dica;
@@ -179,22 +45,3 @@ function calcular() {
 
     document.getElementById("resultado").classList.remove("hidden");
 }
-
-function salvarPDF() {
-    window.print();
-}
-
-function whats() {
-    const numero = "5561992186067";
-    const msg = encodeURIComponent("Olá 💖 quero ver produtos da minha fase");
-    window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
-}
-
-function abrirPlataforma() {
-    window.open("https://atacadaofarma.base44.app/", "_blank");
-}
-
-</script>
-
-</body>
-</html>

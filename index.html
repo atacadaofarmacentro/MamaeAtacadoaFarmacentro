@@ -35,16 +35,25 @@ body { font-family: 'Poppins', sans-serif; }
             Data da última menstruação (DUM)
         </label>
         
-        <!-- Campo com máscara dd/mm/aaaa -->
+        <!-- Campo visível para digitar + ícone clicável -->
         <div class="relative">
             <input 
                 type="text" 
-                id="dum"
+                id="dumText"
                 maxlength="10"
                 placeholder="dd/mm/aaaa"
                 class="w-full p-4 rounded-xl text-lg font-bold outline-none border-2 border-pink-100 focus:border-pink-500 shadow-inner text-center">
-            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-400 pointer-events-none">📅</span>
+            
+            <!-- Ícone de calendário clicável -->
+            <button onclick="abrirCalendario()" 
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-500 text-2xl hover:text-pink-600 transition">
+                📅
+            </button>
         </div>
+
+        <!-- Input type="date" escondido só para abrir o calendário nativo -->
+        <input type="date" id="dumHidden" class="hidden" 
+               min="2024-01-01" max="2027-12-31">
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl active:scale-95 transition shadow-lg">
@@ -87,8 +96,8 @@ body { font-family: 'Poppins', sans-serif; }
 </div>
 
 <script>
-// Máscara automática dd/mm/aaaa
-document.getElementById("dum").addEventListener("input", function(e) {
+// Máscara automática no campo de texto
+document.getElementById("dumText").addEventListener("input", function(e) {
     let value = e.target.value.replace(/\D/g, '');
     if (value.length > 8) value = value.slice(0, 8);
     
@@ -98,8 +107,25 @@ document.getElementById("dum").addEventListener("input", function(e) {
     e.target.value = value;
 });
 
+// Sincroniza quando o usuário seleciona no calendário nativo
+document.getElementById("dumHidden").addEventListener("change", function() {
+    const hiddenDate = this.value; // yyyy-mm-dd
+    if (hiddenDate) {
+        const [ano, mes, dia] = hiddenDate.split('-');
+        const formatted = `${dia}/${mes}/${ano}`;
+        document.getElementById("dumText").value = formatted;
+    }
+});
+
+function abrirCalendario() {
+    const hiddenInput = document.getElementById("dumHidden");
+    hiddenInput.focus();
+    hiddenInput.showPicker();   // Abre o calendário nativo
+}
+
+// Função calcular (usa o campo visível com máscara)
 function calcular() {
-    let dumStr = document.getElementById("dum").value.trim();
+    let dumStr = document.getElementById("dumText").value.trim();
     
     if (!dumStr || dumStr.length !== 10) {
         alert("Por favor, insira a data completa no formato dd/mm/aaaa");

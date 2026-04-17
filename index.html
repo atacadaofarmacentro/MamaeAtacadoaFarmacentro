@@ -28,18 +28,15 @@ body { font-family: 'Poppins', sans-serif; }
 
     <div class="flex items-center justify-center gap-4 px-4">
 
-        <!-- LOGO ESQUERDA -->
         <img src="imagens/atacadao.png"
              class="w-24 h-24 rounded-full bg-white p-3 shadow"
              alt="logo esquerda">
 
-        <!-- TEXTO CENTRAL -->
         <div>
             <h1 class="text-4xl font-bold">💖 Mamãe</h1>
             <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
         </div>
 
-        <!-- LOGO DIREITA -->
         <img src="imagens/atacadao.png"
              class="w-24 h-24 rounded-full bg-white p-3 shadow"
              alt="logo direita">
@@ -47,7 +44,7 @@ body { font-family: 'Poppins', sans-serif; }
     </div>
 
     <p class="mt-4 text-pink-100">
-        Descubra sua fase e o que é comum na gestação 💖
+        Descubra sua fase da gestação e veja o que é comum em cada etapa 💖
     </p>
 
 </div>
@@ -69,7 +66,6 @@ body { font-family: 'Poppins', sans-serif; }
             CALCULAR GESTAÇÃO
         </button>
 
-        <!-- BOTÃO PLATAFORMA -->
         <button onclick="abrirPlataforma()"
             class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-2xl">
             🌐 Nossa Plataforma
@@ -82,7 +78,7 @@ body { font-family: 'Poppins', sans-serif; }
 
         <div class="text-center">
             <h2 class="text-5xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">semanas de gestação</p>
+            <p class="text-gray-500 mt-1">~ semanas de gestação (estimativa)</p>
 
             <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
             <p class="text-gray-500 mt-2" id="dpp"></p>
@@ -90,27 +86,27 @@ body { font-family: 'Poppins', sans-serif; }
 
         <!-- DICA -->
         <div class="mt-6 p-5 rounded-2xl bg-pink-50 border border-pink-100">
-            <p class="font-bold text-pink-700">💖 O que é comum nessa fase:</p>
+            <p class="font-bold text-pink-700">💖 O que é comum nesta fase:</p>
             <p id="dica" class="text-gray-700 mt-2"></p>
         </div>
 
         <!-- SINTOMAS -->
         <div class="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-100">
-            <p class="font-bold text-blue-700">🤰 Sintomas normais dessa fase:</p>
+            <p class="font-bold text-blue-700">🤰 Sintomas comuns desta fase:</p>
             <p id="sintomas" class="text-gray-700 mt-2"></p>
             <p class="text-xs text-gray-500 mt-2">
-                ✔ Isso é comum na gestação. Não precisa se preocupar.
+                ✔ Essas mudanças são comuns na gestação. Em caso de dúvida, consulte seu médico.
             </p>
         </div>
 
         <!-- BOTÃO WHATSAPP -->
         <button onclick="whats()"
             class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl">
-            📲 Falar com a Farmácia
+            📲 Ver produtos da minha fase
         </button>
 
         <p class="text-xs text-gray-400 mt-3 text-center">
-            *Conteúdo educativo. Consulte sempre seu médico.
+            *Ferramenta informativa. Não substitui acompanhamento médico.
         </p>
 
     </div>
@@ -141,20 +137,20 @@ function calcular() {
 
     if (semanas <= 12) {
         trimestre = "🌸 1º Trimestre";
-        dica = "Ácido fólico e vitaminas pré-natais são comuns nesta fase.";
-        sintomas = "Enjoo, cansaço e alterações hormonais.";
+        dica = "O uso de ácido fólico e vitaminas pré-natais é frequentemente indicado pelo médico nesta fase.";
+        sintomas = "Enjoo, cansaço, sono excessivo e alterações hormonais.";
     }
 
     else if (semanas <= 27) {
         trimestre = "🤰 2º Trimestre";
-        dica = "Ferro, ômega 3 e hidratação são comuns.";
-        sintomas = "Mais energia e crescimento da barriga.";
+        dica = "Suplementação com ferro, ômega 3 e cuidados com a pele são comuns conforme orientação médica.";
+        sintomas = "Mais energia, crescimento da barriga e leve dor lombar.";
     }
 
     else {
         trimestre = "🐣 3º Trimestre";
-        dica = "Preparação para maternidade e cuidados finais.";
-        sintomas = "Inchaço, cansaço e contrações leves.";
+        dica = "Fase de preparação para o parto, com foco em cuidados finais e orientação médica.";
+        sintomas = "Inchaço, cansaço, falta de ar leve e contrações leves.";
     }
 
     document.getElementById("semanas").innerText = semanas;
@@ -173,7 +169,7 @@ function whats() {
     const numero = "5561992186067";
 
     const msg = encodeURIComponent(
-        "Olá! Usei a calculadora de gestação 💖 e quero saber mais sobre os produtos indicados."
+        "Olá 💖 acabei de usar a calculadora de gestação e quero ver os produtos recomendados para minha fase."
     );
 
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");

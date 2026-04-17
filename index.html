@@ -19,7 +19,7 @@ body { font-family: 'Poppins', sans-serif; }
     border-radius: 24px;
 }
 
-/* 🔥 ESTILO DO PDF (quando imprimir) */
+/* PRINT / PDF */
 @media print {
     body * {
         visibility: hidden;
@@ -50,14 +50,16 @@ body { font-family: 'Poppins', sans-serif; }
 
     <div class="flex items-center justify-center gap-4 px-4">
 
-        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
+        <img src="imagens/atacadao.png"
+             class="w-24 h-24 rounded-full bg-white p-3 shadow">
 
         <div>
             <h1 class="text-4xl font-bold">💖 Mamãe</h1>
             <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
         </div>
 
-        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
+        <img src="imagens/atacadao.png"
+             class="w-24 h-24 rounded-full bg-white p-3 shadow">
 
     </div>
 
@@ -80,19 +82,19 @@ body { font-family: 'Poppins', sans-serif; }
             class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
 
         <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             CALCULAR GESTAÇÃO
         </button>
 
         <button onclick="abrirPlataforma()"
-            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             🌐 Nossa Plataforma
         </button>
 
     </div>
 </div>
 
-<!-- RESULTADO (ÁREA DO PDF) -->
+<!-- RESULTADO / PDF -->
 <div id="print-area" class="max-w-md mx-auto px-6 mt-6">
 
     <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
@@ -115,14 +117,15 @@ body { font-family: 'Poppins', sans-serif; }
             <p id="sintomas"></p>
         </div>
 
-        <!-- BOTÃO PDF -->
+        <!-- BOTÕES FINAIS -->
         <button onclick="salvarPDF()"
-            class="no-print w-full mt-6 bg-black text-white font-bold py-4 rounded-2xl">
+            class="no-print w-full mt-6 text-white font-bold py-4 rounded-2xl
+            bg-gradient-to-r from-pink-500 to-purple-600 active:scale-95 transition">
             📄 Salvar em PDF
         </button>
 
         <button onclick="whats()"
-            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl">
+            class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             📲 Ver produtos
         </button>
 

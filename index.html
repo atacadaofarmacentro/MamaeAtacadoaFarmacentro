@@ -35,7 +35,6 @@ body { font-family: 'Poppins', sans-serif; }
             Data da última menstruação (DUM)
         </label>
         
-        <!-- Campo visível para digitar + ícone clicável -->
         <div class="relative">
             <input 
                 type="text" 
@@ -44,14 +43,12 @@ body { font-family: 'Poppins', sans-serif; }
                 placeholder="dd/mm/aaaa"
                 class="w-full p-4 rounded-xl text-lg font-bold outline-none border-2 border-pink-100 focus:border-pink-500 shadow-inner text-center">
             
-            <!-- Ícone de calendário clicável -->
             <button onclick="abrirCalendario()" 
                     class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-500 text-2xl hover:text-pink-600 transition">
                 📅
             </button>
         </div>
 
-        <!-- Input type="date" escondido só para abrir o calendário nativo -->
         <input type="date" id="dumHidden" class="hidden" 
                min="2024-01-01" max="2027-12-31">
 
@@ -96,20 +93,26 @@ body { font-family: 'Poppins', sans-serif; }
 </div>
 
 <script>
-// Máscara automática no campo de texto
+// ====================== MÁSCARA MELHORADA COM BACKSPACE ======================
 document.getElementById("dumText").addEventListener("input", function(e) {
-    let value = e.target.value.replace(/\D/g, '');
+    let value = e.target.value.replace(/\D/g, ''); // remove tudo que não é número
+    
+    // Limita a 8 dígitos
     if (value.length > 8) value = value.slice(0, 8);
-    
-    if (value.length >= 2) value = value.slice(0,2) + '/' + value.slice(2);
-    if (value.length >= 5) value = value.slice(0,5) + '/' + value.slice(5);
-    
-    e.target.value = value;
+
+    // Formata com as barras
+    let formatted = '';
+    if (value.length > 0) formatted += value.slice(0, 2);
+    if (value.length > 2) formatted += '/' + value.slice(2, 4);
+    if (value.length > 4) formatted += '/' + value.slice(4, 8);
+
+    // Atualiza o valor
+    e.target.value = formatted;
 });
 
-// Sincroniza quando o usuário seleciona no calendário nativo
+// Sincroniza quando seleciona no calendário
 document.getElementById("dumHidden").addEventListener("change", function() {
-    const hiddenDate = this.value; // yyyy-mm-dd
+    const hiddenDate = this.value;
     if (hiddenDate) {
         const [ano, mes, dia] = hiddenDate.split('-');
         const formatted = `${dia}/${mes}/${ano}`;
@@ -120,10 +123,9 @@ document.getElementById("dumHidden").addEventListener("change", function() {
 function abrirCalendario() {
     const hiddenInput = document.getElementById("dumHidden");
     hiddenInput.focus();
-    hiddenInput.showPicker();   // Abre o calendário nativo
+    hiddenInput.showPicker();
 }
 
-// Função calcular (usa o campo visível com máscara)
 function calcular() {
     let dumStr = document.getElementById("dumText").value.trim();
     

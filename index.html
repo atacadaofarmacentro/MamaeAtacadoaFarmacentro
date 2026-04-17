@@ -58,10 +58,11 @@ body { font-family: 'Poppins', sans-serif; }
             Data da última menstruação (DUM)
         </label>
 
-        <!-- INPUT MELHORADO -->
+        <!-- INPUT CORRIGIDO -->
         <input type="date" id="dum"
             class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold"
-            inputmode="none">
+            min="2000-01-01"
+            max="2099-12-31">
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 active:scale-95 transition transform hover:bg-pink-700 text-white font-bold py-4 rounded-2xl">

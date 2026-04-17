@@ -18,13 +18,28 @@ body { font-family: 'Poppins', sans-serif; }
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
     border-radius: 24px;
 }
+
+/* 🔥 MELHORA IMPRESSÃO PDF */
+@media print {
+    body {
+        background: white;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    .card {
+        box-shadow: none;
+    }
+}
 </style>
 </head>
 
 <body class="bg-gray-50">
 
 <!-- HEADER -->
-<div class="hero text-white text-center py-10">
+<div class="hero text-white text-center py-10 no-print">
 
     <div class="flex items-center justify-center gap-4 px-4">
 
@@ -52,13 +67,12 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- INPUT -->
 <div class="max-w-md mx-auto px-6 -mt-10">
 
-    <div class="bg-white p-6 rounded-3xl card">
+    <div class="bg-white p-6 rounded-3xl card no-print">
 
         <label class="block font-semibold text-gray-600 mb-2">
             Data da última menstruação (DUM)
         </label>
 
-        <!-- INPUT CORRIGIDO -->
         <input type="date" id="dum"
             class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold"
             min="2000-01-01"
@@ -100,12 +114,18 @@ body { font-family: 'Poppins', sans-serif; }
             </p>
         </div>
 
+        <!-- BOTÕES -->
         <button onclick="whats()"
-            class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl no-print">
             📲 Ver produtos da minha fase
         </button>
 
-        <p class="text-xs text-gray-400 mt-3 text-center">
+        <button onclick="window.print()"
+            class="w-full mt-3 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-2xl no-print">
+            🧾 Salvar em PDF
+        </button>
+
+        <p class="text-xs text-gray-400 mt-3 text-center no-print">
             *Ferramenta informativa. Não substitui acompanhamento médico.
         </p>
 
@@ -116,17 +136,34 @@ body { font-family: 'Poppins', sans-serif; }
 
 function calcular() {
 
-    const dum = new Date(document.getElementById("dum").value);
-    const hoje = new Date();
+    const input = document.getElementById("dum").value;
 
-    if (!dum.getTime()) {
+    if (!input) {
         alert("Selecione uma data válida");
         return;
     }
 
+    const partes = input.split("-");
+    const ano = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const dia = Number(partes[2]);
+
+    if (ano < 2000 || ano > 2099) {
+        alert("Ano inválido");
+        return;
+    }
+
+    const dum = new Date(ano, mes - 1, dia);
+    const hoje = new Date();
+
     const diff = hoje - dum;
     const dias = diff / (1000 * 60 * 60 * 24);
     const semanas = Math.floor(dias / 7);
+
+    if (semanas < 0 || semanas > 45) {
+        alert("Data de gestação inválida");
+        return;
+    }
 
     const parto = new Date(dum);
     parto.setDate(parto.getDate() + 280);
@@ -137,20 +174,20 @@ function calcular() {
 
     if (semanas <= 12) {
         trimestre = "🌸 1º Trimestre";
-        dica = "O uso de ácido fólico e vitaminas pré-natais é frequentemente indicado pelo médico nesta fase.";
-        sintomas = "Enjoo, cansaço, sono excessivo e alterações hormonais.";
+        dica = "Uso de ácido fólico e vitaminas é comum nesta fase.";
+        sintomas = "Enjoo, cansaço e alterações hormonais.";
     }
 
     else if (semanas <= 27) {
         trimestre = "🤰 2º Trimestre";
-        dica = "Suplementação com ferro, ômega 3 e cuidados com a pele são comuns conforme orientação médica.";
-        sintomas = "Mais energia, crescimento da barriga e leve dor lombar.";
+        dica = "Ferro, ômega 3 e cuidados com a pele são comuns.";
+        sintomas = "Mais energia e crescimento da barriga.";
     }
 
     else {
         trimestre = "🐣 3º Trimestre";
-        dica = "Fase de preparação para o parto, com foco em cuidados finais e orientação médica.";
-        sintomas = "Inchaço, cansaço, falta de ar leve e contrações leves.";
+        dica = "Preparação para o parto e cuidados finais.";
+        sintomas = "Inchaço, cansaço e contrações leves.";
     }
 
     document.getElementById("semanas").innerText = semanas;
@@ -164,23 +201,12 @@ function calcular() {
     document.getElementById("resultado").classList.remove("hidden");
 }
 
-/* ENTER PARA CALCULAR */
-document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("dum");
-
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            calcular();
-        }
-    });
-});
-
 function whats() {
 
     const numero = "5561992186067";
 
     const msg = encodeURIComponent(
-        "Olá 💖 acabei de usar a calculadora de gestação e quero ver os produtos recomendados para minha fase."
+        "Olá 💖 acabei de usar a calculadora de gestação e quero ver os produtos da minha fase."
     );
 
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");

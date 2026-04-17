@@ -26,13 +26,12 @@ body { font-family: 'Poppins', sans-serif; }
 <!-- HEADER -->
 <div class="hero text-white text-center py-10">
 
-    <!-- LOGO + TITULO -->
     <div class="flex items-center justify-center gap-4 px-4">
 
         <!-- LOGO ESQUERDA -->
         <img src="imagens/atacadao.png"
-             class="w-12 h-12 rounded-full bg-white p-1 shadow"
-             alt="Logo esquerda">
+             class="w-20 h-20 rounded-full bg-white p-2 shadow"
+             alt="logo esquerda">
 
         <!-- TEXTO CENTRAL -->
         <div>
@@ -42,8 +41,8 @@ body { font-family: 'Poppins', sans-serif; }
 
         <!-- LOGO DIREITA -->
         <img src="imagens/atacadao.png"
-             class="w-12 h-12 rounded-full bg-white p-1 shadow"
-             alt="Logo direita">
+             class="w-20 h-20 rounded-full bg-white p-2 shadow"
+             alt="logo direita">
 
     </div>
 
@@ -136,20 +135,20 @@ function calcular() {
 
     if (semanas <= 12) {
         trimestre = "🌸 1º Trimestre";
-        dica = "Ácido fólico e vitaminas pré-natais são os mais comuns nesta fase.";
-        sintomas = "Enjoo, cansaço, sono excessivo, sensibilidade nos seios e alterações hormonais.";
+        dica = "Ácido fólico e vitaminas pré-natais são comuns nesta fase.";
+        sintomas = "Enjoo, cansaço e alterações hormonais.";
     }
 
     else if (semanas <= 27) {
         trimestre = "🤰 2º Trimestre";
-        dica = "Ferro, ômega 3 e hidratação da pele são bastante utilizados.";
-        sintomas = "Melhora dos enjoos, aumento da energia, barriga crescendo e leve dor nas costas.";
+        dica = "Ferro, ômega 3 e hidratação são comuns.";
+        sintomas = "Mais energia e crescimento da barriga.";
     }
 
     else {
         trimestre = "🐣 3º Trimestre";
-        dica = "Produtos para maternidade como fraldas, pomadas e cálcio são comuns.";
-        sintomas = "Cansaço, inchaço nas pernas, falta de ar leve e contrações leves.";
+        dica = "Preparação para maternidade e cuidados finais.";
+        sintomas = "Inchaço, cansaço e contrações leves.";
     }
 
     document.getElementById("semanas").innerText = semanas;
@@ -168,7 +167,7 @@ function whats() {
     const numero = "5561992186067";
 
     const msg = encodeURIComponent(
-        "Olá! Usei a calculadora de gestação e estou na minha fase. Quero saber mais sobre os produtos indicados 💖"
+        "Olá! Usei a calculadora de gestação 💖"
     );
 
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");

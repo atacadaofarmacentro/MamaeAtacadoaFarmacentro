@@ -58,11 +58,13 @@ body { font-family: 'Poppins', sans-serif; }
             Data da última menstruação (DUM)
         </label>
 
+        <!-- INPUT MELHORADO -->
         <input type="date" id="dum"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
+            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold"
+            inputmode="none">
 
         <button onclick="calcular()"
-            class="w-full mt-5 bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl">
+            class="w-full mt-5 bg-pink-600 active:scale-95 transition transform hover:bg-pink-700 text-white font-bold py-4 rounded-2xl">
             CALCULAR GESTAÇÃO
         </button>
 
@@ -84,13 +86,11 @@ body { font-family: 'Poppins', sans-serif; }
             <p class="text-gray-500 mt-2" id="dpp"></p>
         </div>
 
-        <!-- DICA -->
         <div class="mt-6 p-5 rounded-2xl bg-pink-50 border border-pink-100">
             <p class="font-bold text-pink-700">💖 O que é comum nesta fase:</p>
             <p id="dica" class="text-gray-700 mt-2"></p>
         </div>
 
-        <!-- SINTOMAS -->
         <div class="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-100">
             <p class="font-bold text-blue-700">🤰 Sintomas comuns desta fase:</p>
             <p id="sintomas" class="text-gray-700 mt-2"></p>
@@ -99,7 +99,6 @@ body { font-family: 'Poppins', sans-serif; }
             </p>
         </div>
 
-        <!-- BOTÃO WHATSAPP -->
         <button onclick="whats()"
             class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl">
             📲 Ver produtos da minha fase
@@ -163,6 +162,17 @@ function calcular() {
 
     document.getElementById("resultado").classList.remove("hidden");
 }
+
+/* ENTER PARA CALCULAR */
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("dum");
+
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            calcular();
+        }
+    });
+});
 
 function whats() {
 

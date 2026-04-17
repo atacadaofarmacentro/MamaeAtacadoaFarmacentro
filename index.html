@@ -46,38 +46,28 @@ body { font-family: 'Poppins', sans-serif; }
 <body class="bg-gray-50">
 
 <div class="hero text-white text-center py-10 no-print">
-
     <div class="flex items-center justify-center gap-4 px-4">
-
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
-
+        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
         <div>
             <h1 class="text-4xl font-bold">💖 Mamãe</h1>
             <p class="text-pink-100 text-sm">Atacadão Farma Centro</p>
         </div>
-
-        <img src="imagens/atacadao.png"
-             class="w-24 h-24 rounded-full bg-white p-3 shadow">
-
+        <img src="imagens/atacadao.png" class="w-24 h-24 rounded-full bg-white p-3 shadow">
     </div>
-
     <p class="mt-4 text-pink-100">
         Descubra sua fase da gestação 💖
     </p>
-
 </div>
 
 <div class="max-w-md mx-auto px-6 -mt-10 no-print">
-
     <div class="bg-white p-6 rounded-3xl card">
-
         <label class="block font-semibold text-gray-600 mb-2">
             Data da última menstruação (DUM)
         </label>
 
         <input type="date" id="dum"
-            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold">
+            min="2024-01-01" max="2026-12-31"
+            class="w-full p-4 rounded-xl bg-gray-100 text-lg font-bold outline-none focus:ring-2 focus:ring-pink-500">
 
         <button onclick="calcular()"
             class="w-full mt-5 bg-pink-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
@@ -88,17 +78,14 @@ body { font-family: 'Poppins', sans-serif; }
             class="w-full mt-3 bg-purple-600 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             🌐 Nossa Plataforma
         </button>
-
     </div>
 </div>
 
 <div id="print-area" class="max-w-md mx-auto px-6 mt-6">
-
     <div id="resultado" class="hidden bg-white p-6 rounded-3xl card">
-
         <div class="text-center">
-            <h2 class="text-5xl font-bold text-pink-600" id="semanas"></h2>
-            <p class="text-gray-500 mt-1">~ semanas de gestação</p>
+            <h2 class="text-4xl font-bold text-pink-600" id="semanas"></h2>
+            <p class="text-gray-500 mt-1">~ de gestação</p>
 
             <p class="mt-4 font-semibold text-gray-700" id="trimestre"></p>
             <p class="text-gray-500 mt-2" id="dpp"></p>
@@ -124,20 +111,24 @@ body { font-family: 'Poppins', sans-serif; }
             class="no-print w-full mt-3 bg-green-500 text-white font-bold py-4 rounded-2xl active:scale-95 transition">
             📲 Ver produtos na loja
         </button>
-
     </div>
 
     <p class="text-[10px] text-gray-400 text-center mt-6 mb-10 no-print">
-        *Este cálculo é uma estimativa baseada em diretrizes gerais. <br> 
-        Sempre consulte seu médico e nunca se automedique.
+        *Este cálculo é uma estimativa educativa. <br> 
+        Sempre consulte seu médico e evite a automedicação.
     </p>
-
 </div>
 
 <script>
+// FUNÇÃO PARA CALCULAR AO APERTAR ENTER
+document.getElementById("dum").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        calcular();
+    }
+});
 
 function calcular() {
-
     const dumInput = document.getElementById("dum").value;
     const dum = new Date(dumInput);
     const hoje = new Date();
@@ -147,12 +138,17 @@ function calcular() {
         return;
     }
 
-    // Calcula a diferença em dias
+    // Validação extra de segurança para o ano (impede mais de 4 dígitos manuais)
+    const anoSelecionado = dum.getFullYear();
+    if (anoSelecionado > 2099 || anoSelecionado < 1900) {
+        alert("Por favor, insira um ano válido com 4 dígitos.");
+        return;
+    }
+
     const dias = Math.floor((hoje - dum) / (1000 * 60 * 60 * 24));
     
-    // Evita datas futuras
     if (dias < 0) {
-        alert("A data da última menstruação não pode ser no futuro!");
+        alert("A data não pode ser no futuro!");
         return;
     }
 
@@ -168,26 +164,25 @@ function calcular() {
 
     if (semanas <= 12) {
         trimestre = "1º Trimestre (Fase de Formação)";
-        dica = "É a fase do Ácido Fólico, essencial para o desenvolvimento do bebê. Evite medicamentos sem prescrição; para dores leves, o Paracetamol costuma ser a opção segura sob orientação médica. Inicie seu pré-natal.";
-        sintomas = "Enjoos matinais, muito sono, cansaço, sensibilidade nos seios e vontade frequente de urinar.";
+        dica = "Fase do Ácido Fólico (importante para o sistema nervoso). Evite medicamentos sem orientação; o Paracetamol costuma ser a opção para dores sob orientação. Inicie seu pré-natal.";
+        sintomas = "Enjoos matinais, fadiga, sensibilidade nos seios e vontade frequente de urinar.";
     } else if (semanas <= 27) {
         trimestre = "2º Trimestre (Fase de Crescimento)";
-        dica = "Muitos médicos indicam suplementação de Ferro e Cálcio agora. É o momento de usar hidratantes e óleos para prevenir estrias. Mantenha-se bem hidratada para evitar infecções.";
-        sintomas = "Energia voltando, barriga começando a aparecer, possíveis cãibras nas pernas e você logo sentirá o bebê mexer!";
+        dica = "Momento comum para iniciar Ferro e Cálcio. Use cremes hidratantes para prevenir estrias e mantenha uma boa hidratação.";
+        sintomas = "Mais energia, barriga crescendo, possíveis cãibras e você começará a sentir os chutes!";
     } else if (semanas <= 42) {
         trimestre = "3º Trimestre (Fase de Preparação)";
-        dica = "Foco em Ômega 3 (DHA) para o cérebro do bebê. Monitore sua pressão arterial regularmente. Prepare a bolsa da maternidade e descanse sempre que possível.";
-        sintomas = "Inchaço nos pés, azia, falta de ar leve (o bebê ocupa mais espaço), dor nas costas e contrações de treinamento.";
+        dica = "Atenção ao Ômega 3 e controle da pressão. Organize sua mala da maternidade e tente descansar mais.";
+        sintomas = "Pés inchados, azia, falta de ar leve e contrações de treinamento.";
     } else {
         trimestre = "Pós-termo";
-        dica = "Consulte seu obstetra imediatamente para monitorar a saúde do bebê.";
+        dica = "Procure seu obstetra para avaliação imediata.";
         sintomas = "Ansiedade e pressão pélvica.";
     }
 
-    // Exibe o resultado com semanas e dias
     document.getElementById("semanas").innerText = diasRestantes > 0 ? 
-        semanas + " sem e " + diasRestantes + " dias" : 
-        semanas;
+        semanas + " semanas e " + diasRestantes + " dias" : 
+        semanas + " semanas";
 
     document.getElementById("trimestre").innerText = trimestre;
     document.getElementById("dpp").innerText =
@@ -197,8 +192,6 @@ function calcular() {
     document.getElementById("sintomas").innerText = sintomas;
 
     document.getElementById("resultado").classList.remove("hidden");
-    
-    // Rola a tela para o resultado
     document.getElementById("resultado").scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -208,14 +201,14 @@ function salvarPDF() {
 
 function whats() {
     const numero = "5561992186067";
-    const msg = encodeURIComponent("Olá 💖 estou com " + document.getElementById("semanas").innerText + " de gestação e gostaria de ver produtos recomendados para mim.");
+    const semanasTexto = document.getElementById("semanas").innerText;
+    const msg = encodeURIComponent("Olá 💖 estou com " + semanasTexto + " e gostaria de conhecer os produtos ideais para minha fase.");
     window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
 }
 
 function abrirPlataforma() {
     window.open("https://atacadaofarma.base44.app/", "_blank");
 }
-
 </script>
 
 </body>
